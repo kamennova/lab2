@@ -18,6 +18,8 @@ string get_data_cell(string line, int &pos) {
 	return data_cell;
 }
 
+//---- Student ----
+
 unsigned int get_students_quantity(ifstream &inFile) {
 	unsigned int quantity;
 	string line;
@@ -67,4 +69,35 @@ void get_study_status(string &line, int &pos, Student &temp) {
 
 	is_contract_str = get_data_cell(line, pos);
 	temp.is_contract = (is_contract_str == "TRUE" ? true : false);
+}
+
+//---- Scolar ----
+
+void write_scholars_list(vector <Student> &students_list, vector <Scholar> &scholars_list) {
+	string line;
+
+	for (int i = 0, quantity = students_list.size(); i < quantity; i++) {
+		if (!is_contract(students_list[i])) {
+			struct Scholar temp;
+			temp.surname = students_list[i].surname;
+			temp.average_mark = get_average_mark(students_list[i]);
+
+			scholars_list.push_back(temp);
+		}
+	}
+}
+
+bool is_contract(Student & student) {
+	return student.is_contract;
+}
+
+float get_average_mark(Student &student) {
+	float sum = 0;
+
+	for (int i = 0; i < student.subj_num; i++) { // ???
+		sum += student.subj_marks[i];
+	}
+
+	sum /= student.subj_num;
+	return sum;
 }
