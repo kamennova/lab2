@@ -20,7 +20,12 @@ struct Student {
 	}
 };
 
-int get_data_cell(string line, int pos, string &data_cell);
+string get_data_cell(string line, int &pos);
 
 unsigned int get_students_quantity(ifstream &);
 void write_students_list(ifstream &, unsigned const int, vector <Student> &);
+
+void add_to_students_list(string &, vector <Student> &);
+void get_subj_marks(string &, int&, Student &);
+void get_student_surname(string &, int &, Student &);
+void get_study_status(string &, int &, Student &);

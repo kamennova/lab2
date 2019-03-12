@@ -7,14 +7,15 @@
 
 using namespace std;
 
-int get_data_cell(string line, int pos, string &data_cell) {
-	int a = pos;
+string get_data_cell(string line, int &pos) {
+	string data_cell;
 
-	for (; line[a] != ',' && line[a] != '\0'; a++) {
-		data_cell += line[a];
+	for (; line[pos] != ',' && line[pos] != '\0'; pos++) {
+		data_cell += line[pos];
 	}
 
-	return ++a;
+	pos++;
+	return data_cell;
 }
 
 unsigned int get_students_quantity(ifstream &inFile) {
@@ -33,25 +34,37 @@ void write_students_list(ifstream &inFile, unsigned const int quantity, vector <
 
 	for (int i = 0; i < quantity; i++) {
 		getline(inFile, line);
-		struct Student temp;
-		string data_cell;
-
-		// getting name
-		int pos = get_data_cell(line, 0, data_cell);
-		temp.surname = data_cell;
-		data_cell = "";
-
-		// getting subject marks
-		for (int s = 0; s < temp.subj_num; s++) {
-			pos = get_data_cell(line, pos, data_cell);
-			temp.subj_marks[s] = stoi(data_cell);
-			data_cell = "";
-		}
-
-		// getting study status
-		pos = get_data_cell(line, pos, data_cell);
-		temp.is_contract = (data_cell == "TRUE" ? true : false);
-
-		students_list.push_back(temp);
+		add_to_students_list(line, students_list);
 	}
+}
+
+void add_to_students_list(string &line, vector <Student> &students_list) {
+	struct Student temp;
+	int pos = 0;
+
+	get_student_surname(line, pos, temp);
+	get_subj_marks(line, pos, temp);
+	get_study_status(line, pos, temp);
+
+	students_list.push_back(temp);
+}
+
+void get_student_surname(string &line, int &pos, Student &temp) {
+	temp.surname = get_data_cell(line, pos);
+}
+
+void get_subj_marks(string &line, int &pos, Student &temp) {
+	string mark_str;
+
+	for (int s = 0; s < temp.subj_num; s++) {
+		mark_str = get_data_cell(line, pos);
+		temp.subj_marks[s] = stoi(mark_str);
+	}
+}
+
+void get_study_status(string &line, int &pos, Student &temp) {
+	string is_contract_str;
+
+	is_contract_str = get_data_cell(line, pos);
+	temp.is_contract = (is_contract_str == "TRUE" ? true : false);
 }
