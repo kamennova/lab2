@@ -1,5 +1,4 @@
 #include <iostream>
-#include <ctime>
 #include <fstream>
 #include <clocale>
 #include <string>
@@ -10,18 +9,12 @@
 
 using namespace std;
 
-ifstream inFile("C:\\students.csv", ios::in);
+const string PATH_TO_FILE = "C:\\students.csv";
+
+ifstream inFile(PATH_TO_FILE, ios::in);
 
 int main() {
 	unsigned int quantity;
-	string name;
-	string line;
-	unsigned int subj1,
-		 subj2,
-		subj3,
-		subj4,
-		subj5;
-	bool isContract;
 
 	setlocale(LC_ALL, "Ukrainian");
 
@@ -32,36 +25,11 @@ int main() {
 	} 
 
 	// getting students number
-	if (getline(inFile, line)) {
-		quantity = stoi(line);
-	}
+	quantity = get_students_quantity(inFile);
 
-	// reading students data
+	// writing students list
 	vector <Student> students;
-
-	for (int i = 0; i < quantity; i++){
-		getline(inFile, line);
-		struct Student temp;
-		string data_cell;
-
-		// getting name
-		int pos = get_data_cell(line, 0, data_cell);
-		temp.surname = data_cell;
-		data_cell = "";
-
-		// getting subject marks
-		for (int s = 0; s < temp.subj_num; s++) {
-			pos = get_data_cell(line, pos, data_cell);
-			temp.subj_marks[s] = stoi(data_cell);
-			data_cell = "";
-		}
-
-		// getting study status
-		pos = get_data_cell(line, pos, data_cell);
-		temp.is_contract = (data_cell == "TRUE" ? true : false);
-
-		students.push_back(temp);
-	}
+	write_student_list(inFile, quantity, students);
 
 	system("pause");
 
