@@ -21,6 +21,9 @@
     <ClCompile Include="Data_process.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Sort_output.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Downloads\students.csv">
@@ -29,6 +32,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data_process.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sort_output.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

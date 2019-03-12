@@ -116,10 +116,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Data_process.cpp" />
+    <ClCompile Include="Sort_output.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data_process.h" />
+    <ClInclude Include="Sort_output.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\..\Downloads\students.csv" />

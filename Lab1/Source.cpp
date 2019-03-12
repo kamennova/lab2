@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Data_process.h"
+#include "Sort_output.h"
 
 using namespace std;
 
@@ -61,8 +62,6 @@ int main() {
 
 		students.push_back(temp);
 	}
-
-	cout << students[0].subj_marks[0];
 
 	system("pause");
 
