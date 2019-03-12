@@ -37,5 +37,8 @@
     <ClInclude Include="Sort_output.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Structures.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

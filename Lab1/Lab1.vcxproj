@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data_process.h" />
+    <ClInclude Include="Structures.h" />
     <ClInclude Include="Sort_output.h" />
   </ItemGroup>
   <ItemGroup>
