@@ -28,7 +28,7 @@ unsigned int get_students_quantity(ifstream &inFile) {
 	return quantity;
 }
 
-void write_student_list(ifstream &inFile, unsigned const int quantity, vector <Student> &students) {
+void write_students_list(ifstream &inFile, unsigned const int quantity, vector <Student> &students_list) {
 	string line;
 
 	for (int i = 0; i < quantity; i++) {
@@ -52,6 +52,6 @@ void write_student_list(ifstream &inFile, unsigned const int quantity, vector <S
 		pos = get_data_cell(line, pos, data_cell);
 		temp.is_contract = (data_cell == "TRUE" ? true : false);
 
-		students.push_back(temp);
+		students_list.push_back(temp);
 	}
 }

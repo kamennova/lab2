@@ -23,4 +23,4 @@ struct Student {
 int get_data_cell(string line, int pos, string &data_cell);
 
 unsigned int get_students_quantity(ifstream &);
-void write_student_list(ifstream &, unsigned const int, vector <Student> &);
+void write_students_list(ifstream &, unsigned const int, vector <Student> &);
