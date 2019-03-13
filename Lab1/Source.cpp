@@ -6,11 +6,11 @@
 #include <vector>
 
 #include "Data_process.h"
-#include "Sort_output.h"
 
 using namespace std;
 
 const string PATH_TO_FILE = "C:\\students.csv";
+const float SCHOLARS_LIMIT = 0.4;
 
 ifstream inFile(PATH_TO_FILE, ios::in);
 
@@ -25,8 +25,7 @@ int main() {
 		return 0;
 	} 
 
-	// getting students number
-	quantity = get_students_quantity(inFile);
+	quantity = get_students_quantity(inFile); // getting students number
 
 	// writing students list
 	vector <Student> students_list;
@@ -34,13 +33,15 @@ int main() {
 
 	vector <Scholar> scholars_list;
 	write_scholars_list(students_list, scholars_list);
+	sort_scholars_list(scholars_list);
 
 	// Testing scholars list
-	cout << "Scholars quantity: " << scholars_list.size() << endl;
-	for (int i = 0; i < scholars_list.size(); i++) {
-		cout << scholars_list[i].surname << ": " << fixed << setprecision(3) << scholars_list[i].average_mark << endl;
-	}
+	cout << "Scholars quantity: " << get_scholars_num(scholars_list, SCHOLARS_LIMIT) << endl;
+	limit_scholars_list(scholars_list, SCHOLARS_LIMIT);
+	scholars_list_output(scholars_list);
 
+	scholars_list_to_file(scholars_list);
+	
 	system("pause");
 
 	return 1;

@@ -2,6 +2,8 @@
 #include <cstring>
 #include <vector>
 #include <fstream>
+#include <iomanip>
+#include <cmath>
 
 #include "Data_process.h"
 
@@ -100,4 +102,48 @@ float get_average_mark(Student &student) {
 
 	sum /= student.subj_num;
 	return sum;
+}
+
+//--- Scholar sort ---
+void scholars_list_output(vector <Scholar> &list) {
+	for (int i = 0; i < list.size(); i++) {
+		cout << i+1 <<") " << list[i].surname << ": " << fixed << setprecision(3) << list[i].average_mark << endl;
+	}
+}
+
+void sort_scholars_list(vector <Scholar> & list) {
+	float prev = list[0].average_mark;
+
+	for (int i = 1, count = list.size(); i < count; i++) {
+		for (int a = 0; a < i; a++) {
+			prev = list[a].average_mark;
+
+			if (list[i].average_mark > prev) {
+				Scholar temp = list[i];
+				list.erase(list.begin() + i);
+				list.insert(list.begin() + a, temp);
+
+				break;
+			}
+		}
+	}
+}
+
+void limit_scholars_list(vector <Scholar> &list, float limit) {
+	int num_to_erase = list.size() - get_scholars_num(list, limit);
+	for (int i = 0; i < num_to_erase; i++){
+		list.erase(list.begin() + list.size() -1);
+	}
+}
+
+int get_scholars_num(vector <Scholar> &list, float limit) {
+	return ceil(list.size() * limit);
+}
+
+void scholars_list_to_file(vector <Scholar> &list ) {
+	ofstream outFile("scholars.csv", ios::out);
+
+	for (int i = 0, count = list.size(); i < count; i++) {
+		outFile << list[i].surname << ", " << list[i].average_mark << '\n';
+	}
 }

@@ -2,9 +2,28 @@
 #include <string>
 #include <vector>
 
-#include "Structures.h"
+//#include "Structures.h"
 
 using namespace std;
+
+struct Student {
+	string surname;
+
+	int * subj_marks;
+	unsigned int subj_num;
+	bool is_contract;
+
+	Student(const unsigned int SUBJ_NUM = 5) {
+		subj_num = SUBJ_NUM;
+		subj_marks = new int[subj_num];
+	}
+};
+
+struct Scholar {
+	string surname;
+
+	float average_mark;
+};
 
 string get_data_cell(string line, int &pos);
 
@@ -23,3 +42,12 @@ void get_study_status(string &, int &, Student &);
 void write_scholars_list(vector <Student> &, vector <Scholar> &);
 bool is_contract(Student &);
 float get_average_mark(Student &);
+
+// --- scholar sort ---
+
+void sort_scholars_list(vector <Scholar> &);
+void scholars_list_output(vector <Scholar> &);
+void limit_scholars_list(vector <Scholar> &list, float limit);
+int get_scholars_num(vector <Scholar> &list, float limit);
+
+void scholars_list_to_file(vector <Scholar> &list);
