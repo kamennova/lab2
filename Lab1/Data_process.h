@@ -10,6 +10,7 @@ struct Student {
 	string surname;
 
 	int * subj_marks;
+	float average;
 	unsigned int subj_num;
 	bool is_contract;
 
@@ -50,4 +51,4 @@ void scholars_list_output(vector <Scholar> &);
 void limit_scholars_list(vector <Scholar> &list, float limit);
 int get_scholars_num(vector <Scholar> &list, float limit);
 
-void scholars_list_to_file(vector <Scholar> &list);
+void scholars_list_to_file( vector <Scholar> &list);

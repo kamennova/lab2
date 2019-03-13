@@ -59,11 +59,30 @@ void get_student_surname(string &line, int &pos, Student &temp) {
 
 void get_subj_marks(string &line, int &pos, Student &temp) {
 	string mark_str;
+	int subj_num = 0;
+	int marks_total = 0;
 
-	for (int s = 0; s < temp.subj_num; s++) {
+	do { 
 		mark_str = get_data_cell(line, pos);
-		temp.subj_marks[s] = stoi(mark_str);
-	}
+
+		if (mark_str != "TRUE" && mark_str != "FALSE" && mark_str != "") {
+			subj_num++;
+			marks_total += stoi(mark_str);
+		}
+		else {
+			if (mark_str == "TRUE") {
+				temp.is_contract = true;
+			}
+			else {
+				temp.is_contract = false;
+			}
+
+			temp.average = marks_total / subj_num;
+			break;
+
+
+		}
+	} while (mark_str != "");
 }
 
 void get_study_status(string &line, int &pos, Student &temp) {

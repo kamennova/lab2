@@ -6,6 +6,7 @@ struct Student {
 	string surname;
 
 	int * subj_marks;
+	float average;
 	unsigned int subj_num;
 	bool is_contract;
 
