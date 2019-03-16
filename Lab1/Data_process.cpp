@@ -33,22 +33,27 @@ unsigned int get_students_quantity(ifstream &inFile) {
 	return quantity;
 }
 
-void write_students_list(ifstream &inFile, unsigned const int quantity, vector <Student> &students_list) {
+vector <Student> write_students_list(ifstream &inFile, unsigned const int quantity, unsigned int subj_num, int &budget_students_num) {
 	string line;
+	vector <Student> students_list;
+
+	getline(inFile, line);
 
 	for (int i = 0; i < quantity; i++) {
 		getline(inFile, line);
-		add_to_students_list(line, students_list);
+		add_to_students_list(line, students_list, subj_num);
+		if (!students_list[i].is_contract) budget_students_num++;
 	}
+
+	return students_list;
 }
 
-void add_to_students_list(string &line, vector <Student> &students_list) {
+void add_to_students_list(string &line, vector <Student> &students_list, unsigned int subj_num) {
 	struct Student temp;
 	int pos = 0;
 
 	get_student_surname(line, pos, temp);
-	get_subj_marks(line, pos, temp);
-	get_study_status(line, pos, temp);
+	get_subj_marks(line, pos, temp, subj_num);
 
 	students_list.push_back(temp);
 }
@@ -57,7 +62,48 @@ void get_student_surname(string &line, int &pos, Student &temp) {
 	temp.surname = get_data_cell(line, pos);
 }
 
-void get_subj_marks(string &line, int &pos, Student &temp) {
+unsigned int get_max_subj_num(ifstream &inFile, unsigned const int quantity) {
+	unsigned int subj_num,
+		max = 0;
+	string line;
+
+	for (int i = 0; i < quantity; i++) {
+		int pos = 0;
+
+		getline(inFile, line);
+		get_data_cell(line, pos); // reading student surname
+
+		subj_num = get_student_subj_num(line, pos); // getting number of student's marks
+		if(subj_num > max) {
+			max = subj_num;
+		}
+	}	
+
+	inFile.clear();
+	inFile.seekg(0, ios::beg);
+
+	return max;
+}
+
+int get_student_subj_num(string line, int pos) {
+	int subj_num = 0;
+	string mark_str;
+
+	do {
+		mark_str = get_data_cell(line, pos);
+
+		if (mark_str != "TRUE" && mark_str != "FALSE" && mark_str != "") {
+			subj_num++;
+		}
+		else {
+			break;
+		}
+	} while (mark_str != "");
+
+	return subj_num;
+}
+
+void get_subj_marks(string &line, int &pos, Student &temp, unsigned int num) {
 	string mark_str;
 	int subj_num = 0;
 	int marks_total = 0;
@@ -70,17 +116,12 @@ void get_subj_marks(string &line, int &pos, Student &temp) {
 			marks_total += stoi(mark_str);
 		}
 		else {
-			if (mark_str == "TRUE") {
-				temp.is_contract = true;
-			}
-			else {
-				temp.is_contract = false;
-			}
+			temp.is_contract = (mark_str == "TRUE" ? true : false);
+			temp.has_passed = subj_num < num ? false : true;
+			
+			temp.sum = marks_total;
 
-			temp.average = marks_total / subj_num;
 			break;
-
-
 		}
 	} while (mark_str != "");
 }
@@ -94,18 +135,21 @@ void get_study_status(string &line, int &pos, Student &temp) {
 
 //---- Scolar ----
 
-void write_scholars_list(vector <Student> &students_list, vector <Scholar> &scholars_list) {
+vector <Scholar> write_scholars_list(vector <Student> &students_list, unsigned int subj_num) {
+	vector <Scholar> scholars_list;
 	string line;
 
 	for (int i = 0, quantity = students_list.size(); i < quantity; i++) {
-		if (!is_contract(students_list[i])) {
+		if (!is_contract(students_list[i]) && students_list[i].has_passed) {
 			struct Scholar temp;
 			temp.surname = students_list[i].surname;
-			temp.average_mark = get_average_mark(students_list[i]);
+			temp.average_mark = students_list[i].sum / subj_num;
 
 			scholars_list.push_back(temp);
 		}
 	}
+
+	return scholars_list;
 }
 
 bool is_contract(Student & student) {
@@ -124,6 +168,7 @@ float get_average_mark(Student &student) {
 }
 
 //--- Scholar sort ---
+
 void scholars_list_output(vector <Scholar> &list) {
 	for (int i = 0; i < list.size(); i++) {
 		cout << i+1 <<") " << list[i].surname << ": " << fixed << setprecision(3) << list[i].average_mark << endl;
@@ -148,11 +193,10 @@ void sort_scholars_list(vector <Scholar> & list) {
 	}
 }
 
-void limit_scholars_list(vector <Scholar> &list, float limit) {
-	int num_to_erase = list.size() - get_scholars_num(list, limit);
-	for (int i = 0; i < num_to_erase; i++){
-		list.erase(list.begin() + list.size() -1);
-	}
+void limit_scholars_list(vector <Scholar> &list, int limit) {
+	while (list.size() > limit){
+			list.erase(list.begin() + list.size() - 1);
+		}
 }
 
 int get_scholars_num(vector <Scholar> &list, float limit) {
